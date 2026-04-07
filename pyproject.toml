@@ -1,0 +1,16 @@
+[project]
+name = "simple-chatbot"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.135.2",
+    "ipython>=9.11.0",
+    "langchain>=1.2.13",
+    "langchain-community>=0.4.1",
+    "langchain-nvidia-ai-endpoints>=1.2.1",
+    "langchain-tavily>=0.2.17",
+    "markdown>=3.10.2",
+    "wikipedia>=1.4.0",
+]

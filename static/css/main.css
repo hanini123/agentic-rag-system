@@ -1,0 +1,193 @@
+/* ===== Global Reset ===== */
+/* Remove default spacing and ensure consistent box sizing */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    /* Apply Poppins font everywhere */
+    font-family: "Poppins", sans-serif;
+}
+
+
+/* ===== Page Layout ===== */
+/* Make the body take full viewport height and split into:
+   - navbar (auto height)
+   - main content (remaining space) */
+body{
+    height: 100dvh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+/* ===== Chat Container ===== */
+/* Grid splits into:
+   - messages (1fr = takes all space)
+   - input area (auto = stays at bottom) */
+.chat-container{
+    display: grid;
+    grid-template-rows: 1fr auto;
+}
+
+
+/* ===== Messages Area ===== */
+/* Scrollable area where messages appear */
+.chat-messages{
+    padding:20px;
+    overflow-y:auto;
+
+    /* Hide scrollbar (cross-browser) */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+
+    display:flex;
+    flex-direction:column;
+    gap:12px; 
+}
+
+/* Hide scrollbar in Chrome/Safari */
+.chat-messages::-webkit-scrollbar {
+    width: 0px;
+}
+
+
+/* ===== Message Container ===== */
+/* Each message (user or bot) */
+.message{
+    display:flex;
+
+    /* Align message bubble and avatar nicely */
+    align-items:flex-end;
+
+    /* Limit width so messages don’t stretch full screen */
+    max-width:70%;
+}
+
+
+/* User messages aligned to the right */
+.message.user{
+    align-self:flex-end;
+}
+
+
+/* Bot messages aligned to the left */
+.message.bot{
+    align-self:flex-start;
+}
+
+
+/* ===== Message Bubble ===== */
+/* Styling for text container */
+.text-bubble{
+    padding:12px 16px;
+
+    /* Rounded corners (chat-style) */
+    border-radius:8px;
+
+    line-height:1.4;
+}
+
+
+/* ===== Bot Avatar ===== */
+/* Small circular image next to bot messages */
+.bot-logo{
+    width:50px;
+    height:50px;
+
+    border-radius:50%; /* makes it circular */
+
+    margin-right:8px; /* space between logo and message */
+}
+
+
+/* ===== Input Area ===== */
+/* Bottom section where user types messages */
+.input-area{
+    display:flex;
+    align-items:center;
+
+    padding:5px;
+
+    /* Light border around input container */
+    border:1px solid #e5e5e5;
+
+    /* Rounded input container */
+    border-radius:25px;
+}
+
+
+/* ===== Input Field ===== */
+.chat-input{
+    flex-grow:1; /* takes all available space */
+
+    border:none; 
+
+    padding:10px 15px;
+
+    font-size:15px;
+
+    outline:none; /* remove blue outline on focus */
+}
+
+/* ===== Send Button ===== */
+.send-button{
+    background:transparent;
+    border:none;
+
+    font-size:30px; 
+
+    cursor:pointer;
+}
+
+
+/* Hover effect for send button */
+.send-button:hover{
+    color:#0056b3;
+}
+
+
+/* Disabled state (when waiting for response) */
+.send-button:disabled{
+    color:#c0c0c0;
+    cursor:not-allowed;
+}
+
+
+
+/* ===== Code Block (GitHub style) ===== */
+
+.text-bubble pre {
+    background: #0d1117;
+    color: #c9d1d9;
+    padding: 16px;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 12px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Light mode */
+[data-bs-theme="light"] .text-bubble pre {
+    background: #f6f8fa;
+    color: #24292f;
+    border: 1px solid #d0d7de;
+}
+
+/* Remove double background */
+.text-bubble pre code {
+    background: transparent;
+    padding: 0;
+}
+
+/* Inline code */
+.text-bubble code {
+    background: rgba(0,0,0,0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+[data-bs-theme="dark"] .text-bubble code {
+    background: rgba(255,255,255,0.1);
+}

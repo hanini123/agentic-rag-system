@@ -1,0 +1,162 @@
+<!--
+========================================================
+Base Layout Template (Jinja2)
+========================================================
+
+Purpose:
+--------
+This is the global layout used across all pages of the chatbot application.
+
+It provides:
+- Navigation bar (branding + controls)
+- Theme switching (light / dark / auto)
+- Shared external dependencies (Bootstrap, fonts, JS libs)
+- Jinja2 content injection system
+
+Architecture Role:
+------------------
+This is the UI shell of the application.
+All pages (like chat.html) extend this layout.
+========================================================
+-->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>RAG Chatbot</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter&family=Poppins&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Custom CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', path='css/main.css') }}"
+    />
+
+    <!-- Markdown / Code Highlighting (future-proofing for LLM output) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/highlight.js/styles/github-dark.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js/lib/highlight.min.js"></script>
+  </head>
+
+  <body>
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar navbar-expand-lg navbar-blur">
+      <div class="container-fluid">
+        <!-- Brand -->
+        <a class="navbar-brand" href="#" style="font-size: 22px">
+          <span class="text-info">RAG</span
+          ><span class="text-warning">Chat</span>
+        </a>
+
+        <!-- Mobile toggle -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <!-- Right controls -->
+          <div class="d-flex ms-auto gap-3 align-items-center">
+            <!-- New Chat -->
+            <a
+              class="btn btn-outline-primary btn-sm"
+              href="{{ url_for('new_chat') }}"
+            >
+              <i class="fa fa-plus"></i> New Chat
+            </a>
+
+            <!-- Theme Switch -->
+            <div class="dropdown">
+              <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                <span id="themeText">🌗 Theme</span>
+              </a>
+
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <button class="dropdown-item" data-bs-theme-value="light">
+                    🌝 Light
+                  </button>
+                </li>
+                <li>
+                  <button class="dropdown-item" data-bs-theme-value="dark">
+                    🌚 Dark
+                  </button>
+                </li>
+                <li>
+                  <button class="dropdown-item" data-bs-theme-value="auto">
+                    🌗 Auto
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="container h-100">{% block content %}{% endblock %}</main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Theme System -->
+    <script>
+      const themeButtons = document.querySelectorAll("[data-bs-theme-value]");
+      const themeText = document.getElementById("themeText");
+
+      function applyTheme(theme) {
+        if (theme === "auto") {
+          theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        }
+
+        document.documentElement.setAttribute("data-bs-theme", theme);
+        localStorage.setItem("theme", theme);
+
+        themeText.textContent = theme === "dark" ? "🌚 Dark" : "🌝 Light";
+      }
+
+      themeButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          applyTheme(btn.getAttribute("data-bs-theme-value"));
+        });
+      });
+
+      applyTheme(localStorage.getItem("theme") || "light");
+    </script>
+
+    {% block scripts %}{% endblock %}
+  </body>
+</html>
